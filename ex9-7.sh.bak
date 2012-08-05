@@ -1,0 +1,137 @@
+  1 #!/bin/bash
+  2
+  3 #  内部Bash变量"$*"和"$@"的古怪行为,
+  4 #+ 都依赖于它们是否被双引号引用起来.
+  5 #  单词拆分与换行的不一致的处理.
+  6
+  7
+  8 set -- "First one" "second" "third:one" "" "Fifth: :one"
+  9 # 设置这个脚本的参数, $1, $2, 等等.
+ 10
+ 11 echo
+ 12
+ 13 echo 'IFS unchanged, using "$*"'
+ 14 c=0
+ 15 for i in "$*"               # 引用起来
+ 16 do echo "$((c+=1)): [$i]"   # 这行在下边每个例子中都一样.
+ 17                             # 打印参数.
+ 18 done
+ 19 echo ---
+ 20
+ 21 echo 'IFS unchanged, using $*'
+ 22 c=0
+ 23 for i in $*                 # 未引用
+ 24 do echo "$((c+=1)): [$i]"
+ 25 done
+ 26 echo ---
+ 27
+ 28 echo 'IFS unchanged, using "$@"'
+ 29 c=0
+ 30 for i in "$@"
+ 31 do echo "$((c+=1)): [$i]"
+ 32 done
+ 33 echo ---
+ 34
+ 35 echo 'IFS unchanged, using $@'
+ 36 c=0
+ 37 for i in $@
+ 38 do echo "$((c+=1)): [$i]"
+ 39 done
+ 40 echo ---
+ 41
+ 42 IFS=:
+ 43 echo 'IFS=":", using "$*"'
+ 44 c=0
+ 45 for i in "$*"
+ 46 do echo "$((c+=1)): [$i]"
+ 47 done
+ 48 echo ---
+ 49
+ 50 echo 'IFS=":", using $*'
+ 51 c=0
+ 52 for i in $*
+ 53 do echo "$((c+=1)): [$i]"
+ 54 done
+ 55 echo ---
+ 56
+ 57 var=$*
+ 58 echo 'IFS=":", using "$var" (var=$*)'
+ 59 c=0
+ 60 for i in "$var"
+ 61 do echo "$((c+=1)): [$i]"
+ 62 done
+ 63 echo ---
+ 64
+ 65 echo 'IFS=":", using $var (var=$*)'
+ 66 c=0
+ 67 for i in $var
+ 68 do echo "$((c+=1)): [$i]"
+ 69 done
+ 70 echo ---
+ 71
+ 72 var="$*"
+ 73 echo 'IFS=":", using $var (var="$*")'
+ 74 c=0
+ 75 for i in $var
+ 76 do echo "$((c+=1)): [$i]"
+ 77 done
+ 78 echo ---
+ 79
+ 80 echo 'IFS=":", using "$var" (var="$*")'
+ 81 c=0
+ 82 for i in "$var"
+ 83 do echo "$((c+=1)): [$i]"
+ 84 done
+ 85 echo ---
+ 86
+ 87 echo 'IFS=":", using "$@"'
+ 88 c=0
+ 89 for i in "$@"
+ 90 do echo "$((c+=1)): [$i]"
+ 91 done
+ 92 echo ---
+ 93
+ 94 echo 'IFS=":", using $@'
+ 95 c=0
+ 96 for i in $@
+ 97 do echo "$((c+=1)): [$i]"
+ 98 done
+ 99 echo ---
+100
+101 var=$@
+102 echo 'IFS=":", using $var (var=$@)'
+103 c=0
+104 for i in $var
+105 do echo "$((c+=1)): [$i]"
+106 done
+107 echo ---
+108
+109 echo 'IFS=":", using "$var" (var=$@)'
+110 c=0
+111 for i in "$var"
+112 do echo "$((c+=1)): [$i]"
+113 done
+114 echo ---
+115
+116 var="$@"
+117 echo 'IFS=":", using "$var" (var="$@")'
+118 c=0
+119 for i in "$var"
+120 do echo "$((c+=1)): [$i]"
+121 done
+122 echo ---
+123
+124 echo 'IFS=":", using $var (var="$@")'
+125 c=0
+126 for i in $var
+127 do echo "$((c+=1)): [$i]"
+128 done
+129
+130 echo
+131
+132 # 使用ksh或者zsh -y来试试这个脚本.
+133
+134 exit 0
+135
+136 # 这个例子脚本是由Stephane Chazelas所编写,
+137 # 并且本书作者做了轻微改动.

@@ -1,0 +1,43 @@
+  1 #!/bin/bash
+  2 # zmore
+  3
+  4 #使用'more'来查看gzip文件
+  5
+  6 NOARGS=65
+  7 NOTFOUND=66
+  8 NOTGZIP=67
+  9
+ 10 if [ $# -eq 0 ] # 与if [ -z "$1" ]效果相同
+ 11 # (译者注: 上边这句注释有问题), $1是可以存在的, 可以为空, 如:  zmore "" arg2 arg3
+ 12 then
+ 13   echo "Usage: `basename $0` filename" >&2
+ 14   # 错误消息输出到stderr.
+ 15   exit $NOARGS
+ 16   # 返回65作为脚本的退出状态的值(错误码).
+ 17 fi
+ 18
+ 19 filename=$1
+ 20
+ 21 if [ ! -f "$filename" ]   # 将$filename引用起来, 这样允许其中包含空白字符.
+ 22 then
+ 23   echo "File $filename not found!" >&2
+ 24   # 错误消息输出到stderr.
+ 25   exit $NOTFOUND
+ 26 fi
+ 27
+ 28 if [ ${filename##*.} != "gz" ]
+ 29 # 在变量替换中使用中括号结构.
+ 30 then
+ 31   echo "File $1 is not a gzipped file!"
+ 32   exit $NOTGZIP
+ 33 fi
+ 34
+ 35 zcat $1 | more
+ 36
+ 37 # 使用过滤命令'more.'
+ 38 # 当然, 如果你愿意, 也可以使用'less'.
+ 39
+ 40
+ 41 exit $?   # 脚本将把管道的退出状态作为返回值.
+ 42 # 事实上, 也不一定非要加上"exit $?", 因为在任何情况下,
+ 43 # 脚本都会将最后一条命令的退出状态作为返回值.

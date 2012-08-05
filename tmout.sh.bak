@@ -1,0 +1,15 @@
+  1 # 只能够在Bash脚本中使用, 必须使用2.05b或之后版本的Bash.
+  2
+  3 TMOUT=3    # 提示输入时间为3秒.
+  4
+  5 echo "What is your favorite song?"
+  6 echo "Quickly now, you only have $TMOUT seconds to answer!"
+  7 read song
+  8
+  9 if [ -z "$song" ]
+ 10 then
+ 11   song="(no answer)"
+ 12   # 默认响应.
+ 13 fi
+ 14
+ 15 echo "Your favorite song is $song."
